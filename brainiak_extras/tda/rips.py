@@ -238,8 +238,8 @@ def _create_coboundary_matrix(sorted_simplices, max_dim):
     # this will be our dictionary
     simplex_index_dict = {}
 
-    # This builds the dictionary and initializes each column in cobdy_matrix_pre to an empty column,
-    # with the appropriate dimension
+    # This builds the dictionary and initializes each column in cobdy_matrix_pre
+    # to an empty column, with the appropriate dimension
     for i, (tau, _) in enumerate(sorted_simplices):
         # add each simplex tau together with its associated index to the dictionary.
         # if there are j simplices added already, we take the new simplex to have index j.
@@ -248,8 +248,10 @@ def _create_coboundary_matrix(sorted_simplices, max_dim):
         # get the dimension of tau
 
         # note: PHAT requires each column to be labelled with an index.
-        # The extra indices are needed to specify the order in which columns are handled when using the twist optimization.
-        # in the case of ordinary homology, this extra index is jsut the dimension of the corresponding simplex, but in cohomology it is the
+        # The extra indices are needed to specify the order in which columns
+        # are handled when using the twist optimization.
+        # in the case of ordinary homology, this extra index is just the dimension
+        #  of the corresponding simplex, but in cohomology it is the
         # codimension", as defined in the following line of code.
         codim_tau = max_dim - (len(tau) - 1)
         # add a column in cobdy_matrx corresponding to tau, initially empty.
@@ -258,8 +260,8 @@ def _create_coboundary_matrix(sorted_simplices, max_dim):
     # now we add in all of the column entries
     for i, (tau, _) in enumerate(sorted_simplices):
         curr_index = len(sorted_simplices) - 1 - i
-        # for each face sigma of tau, add an entry corresponding to tau into the coboundary column of sigma.
-        # note how this uses the dictionary
+        # for each face sigma of tau, add an entry corresponding to tau into
+        # the coboundary column of sigma. Note how this uses the dictionary.
 
         if len(tau) > 1:
             for tau_hat in _faces(tau):
@@ -329,8 +331,7 @@ def rips_filtration(max_dim: tc.all(int, gte_zero),
             dimension = len(sorted_simplices[len_minus_one - pairs[i][1]][0]) - 1
             scaled_pairs.append((codeath, cobirth, dimension))
 
-
-            # add in the intervals with endpoint inf
+    # add in the intervals with endpoint inf
     # To do this, we first construct an array paired_indices such that
     # if the j^th simplex (in the coboundary order) appears in a pair, paired_incides[j] = 1
     # otherwise paired_incides[j] = 0.
