@@ -74,12 +74,17 @@ def numpy_2d_float(x):
         and x.dtype in (np.float32, np.float64)
 
 
+def sp_matrix(x):
+    """Type predicate: a scipy.sparse array"""
+    return isinstance(x, sp.lil_matrix) \
+        or isinstance(x, sp.csc_matrix) \
+        or isinstance(x, sp.csr_matrix)
+
+
 """Type predicate: something like a 2D array"""
 array_like_2d = tc.any(tc.list_of(tc.list_of(tc.any(int, float))),
                        numpy_2d_float,
-                       sp.lil_matrix,
-                       sp.csc_matrix,
-                       sp.csr_matrix)
+                       sp_matrix)
 
 
 @tc.typecheck
