@@ -81,8 +81,13 @@ def sp_matrix(x):
         or isinstance(x, sp.csr_matrix)
 
 
+def is_number(x):
+    """Type predicate: either int or float"""
+    return isinstance(x, float) or isinstance(x, int)
+
+
 """Type predicate: something like a 2D array"""
-array_like_2d = tc.any(tc.list_of(tc.list_of(tc.any(int, float))),
+array_like_2d = tc.any(tc.list_of(tc.list_of(is_number)),
                        numpy_2d_float,
                        sp_matrix)
 
