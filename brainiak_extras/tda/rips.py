@@ -67,33 +67,8 @@ import types
 import collections
 
 
-def numpy_2d_float(x):
-    """Type predicate: a numpy array containing floating point values"""
-    return isinstance(x, (np.ndarray, np.generic)) \
-        and len(x.shape) == 2 \
-        and x.dtype in (np.float32, np.float64)
-
-
-def sp_matrix(x):
-    """Type predicate: a scipy.sparse array"""
-    return isinstance(x, sp.lil_matrix) \
-        or isinstance(x, sp.csc_matrix) \
-        or isinstance(x, sp.csr_matrix)
-
-
-def is_number(x):
-    """Type predicate: either int or float"""
-    return isinstance(x, float) or isinstance(x, int)
-
-
-"""Type predicate: something like a 2D array"""
-array_like_2d = tc.any(tc.list_of(tc.list_of(is_number)),
-                       numpy_2d_float,
-                       sp_matrix)
-
-
 @tc.typecheck
-def _lower_neighbors(dist_mat: array_like_2d,
+def _lower_neighbors(dist_mat,
                      max_scale: tc.any(int, float)) \
         -> tc.list_of(tc.list_of(np.int32)):
     """
@@ -127,7 +102,8 @@ def _lower_neighbors(dist_mat: array_like_2d,
 @tc.typecheck
 def _add_cofaces(lower_neighbors: tc.list_of(tc.list_of(np.int32)),
                  max_dim: int,
-                 dist_mat: array_like_2d, start: int):
+                 dist_mat,
+                 start: int):
     """
     Returns all cofaces for the given start node.
 
@@ -199,7 +175,7 @@ def gt_zero(n):
 
 
 @tc.typecheck
-def _rips_simplices(max_dim: int, max_scale: float, dist_mat: array_like_2d):
+def _rips_simplices(max_dim: int, max_scale: float, dist_mat):
     """
     Creates simplices from a distance matrix.
 
@@ -301,7 +277,7 @@ def _create_coboundary_matrix(sorted_simplices, max_dim):
 @tc.typecheck
 def rips_filtration(max_dim: tc.all(int, gte_zero),
                     max_scale: tc.all(tc.any(int, float), gt_zero),
-                    dist_mat: array_like_2d):
+                    dist_mat):
     """
     Builds a boundary matrix for the boundary-Rips filtration up to dimension
      `max_dim`.
