@@ -103,7 +103,7 @@ setup(
         'setuptools_scm',
     ],
     install_requires=[
-        'scikit-learn',
+        'scikit-learn[alldeps]',
         'scipy',
         'pybind11>=1.7',
         'phat>=1.5.0a',
